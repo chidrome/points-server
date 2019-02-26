@@ -31,6 +31,7 @@ function fromRequest(req){
 // Remember to pass the JWT_SECRET to ExpressJWT (it will break without it!)
 // NOTE on ExpressJWT: The unless portion is only needed if you need exceptions
 app.use('/auth', require('./controllers/auth'));
+app.use('/points', require('./controllers/points'));
 
 // This is the catch-all route. Ideally you don't get here unless you made a mistake on your front-end
 app.get('*', function(req, res, next) {
