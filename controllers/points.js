@@ -1,7 +1,6 @@
 const express = require('express');
 const request = require('request');
 const cheerio = require('cheerio');
-const cheerioTableparser = require('cheerio-tableparser');
 const router = express.Router();
 
 router.get('/home', (req, res) => {
