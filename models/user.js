@@ -22,14 +22,29 @@ var userSchema = new mongoose.Schema({
   }
 });
 
-// TODO: Override 'toJSON' to prevent the password from being returned with the user
+// Override 'toJSON' to prevent the password from being returned with the user
+userSchema.set('toJSON', {
+  transform: (doc, user) => {
+    const userJson = {
+      id: user._id,
+      email: user.email,
+      name: user.name,
+      location: user.location
+    }
+    return userJson;
+  }
+});
 
+// A helper function to authenticate with bcrypt
+userSchema.methods.isAuthenticated = function(password){
+  return bcrypt.compareSync(password, this.password)
+}
 
-// TODO: A helper function to authenticate with bcrypt
-
-
-// TODO: Find out Mongoose's version of a beforeCreate hook
-
+// Find out Mongoose's version of a beforeCreate hook
+userSchema.pre('save', function(next){
+  this.password = bcrypt.hashSync(this.password, 12)
+  next()
+})
 
 // Exporting the User model
 module.exports = mongoose.model('User', userSchema);
