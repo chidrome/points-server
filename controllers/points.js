@@ -5,13 +5,31 @@ const router = express.Router();
 const db = require('../models');
 
 
-router.get('/testing', (req, res)=> {
+router.post('/programs', (req, res)=> {
+    console.log('TAYLOR NEEDS ENERGY')
     db.Program.find({})
     .then(results => {
+        console.log(results)
         res.send(results)
     })
     .catch(error => {
         console.log('THERE\'S BEEN AN ERROR RETRIEVING ALL THE PROGRAMS', error)
+    })
+})
+
+router.put('/edit', (req, res) => {
+    db.User.findOneAndUpdate({
+        _id: req.user.id
+    }, {
+        mileage_program: req.body.mileage_program,
+        balance: req.body.balance
+    })
+    .then(updatedUserInfo => {
+        res.send(updatedUserInfo)
+        console.log('This user has been updated', updatedUserInfo)
+    })
+    .catch(error => {
+        console.log('ERROR UPDATING USER INFO', error)
     })
 })
 
@@ -22,21 +40,8 @@ router.get('/monthly/update', (req, res) => {
         var data = $('td').map(function(index, element){
             return $(this).text();
         }).get()
-        // return the airline program and the current month's point valuation as an object
-        // function points(data) {
-        //     let airlines = []
-        //     for(let i = 0; i < data.length; i+=5){
-        //         airlines.push({
-        //             Program: data[i],
-        //             Current_Month: data[i+3]
-        //         })
-        //     }
-        //     return airlines;
-        // }
-        // console.log(points(data))
-        // res.send(points(data))
 
-        // update the db to with data scraped from the website
+        // update the db to with data scraped from the website table
         function updateDb(data) {
             for(let i = 0; i < data.length; i+=5){
                 db.Program.findOneAndUpdate({
@@ -56,7 +61,6 @@ router.get('/monthly/update', (req, res) => {
             }
         }
         updateDb(data)
-
     })
 })
 

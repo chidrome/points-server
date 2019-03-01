@@ -1,6 +1,7 @@
-var mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const mongoose = require('mongoose');
 
-var userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -19,6 +20,16 @@ var userSchema = new mongoose.Schema({
     required: true,
     minlength: 6,
     maxlength: 99
+  },
+  mileage_program: {
+    type: String,
+    required: false,
+    minlength: 1,
+    maxlength: 99
+  },
+  balance: {
+    type: Number,
+    required: false
   }
 });
 
